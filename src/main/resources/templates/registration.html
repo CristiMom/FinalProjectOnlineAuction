@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}"/>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/tooplate-main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/custom.css}"/>
+
+
+
+    <title>Title</title>
+</head>
+<body>
+<div class="featured container no-gutter">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a sec:authorize="isAuthenticated()" class="nav-item nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                <a sec:authorize="hasRole('ROLE_BIDDER')" class="nav-item nav-link" href="/myProducts">My Products</a>
+                <a sec:authorize="hasRole('ROLE_SELLER')" class="nav-item nav-link" href="/addItem">Add Item</a>
+                <a sec:authorize="isAnonymous()" class="nav-item nav-link active" href="/registration">Registration</a>
+                <a sec:authorize="isAnonymous()" class="nav-item nav-link" href="/login">Login</a>
+                <a sec:authorize="isAuthenticated()" class="nav-item nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+<form class="form-horizontal registerForm" method="POST" th:object="${userDto}" th:action="@{/registration}">
+
+
+
+    <fieldset>
+
+
+        <div class="mb-3">
+            <!-- E-mail -->
+            <label class="control-label" for="email">E-mail</label>
+            <div class="controls">
+                <input type="text" id="email" th:field="*{email}" placeholder="" class="form-control">
+                <label th:if="${#fields.hasErrors('email')}" th:class="'error'" th:errors="*{email}" class="col-lg-4 control-label" style="color:red;" ></label>
+                <p class="help-block"></p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <!-- firstName -->
+            <label class="control-label" for="firstName">First Name</label>
+            <div class="controls">
+                <input type="text" id="firstName" th:field="*{firstName}" placeholder="First Name" class="form-control">
+                <p class="help-block"></p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <!-- lastName -->
+            <label class="control-label" for="lastName">Last Name</label>
+            <div class="controls">
+                <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last Name" class="form-control">
+                <p class="help-block"></p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <!-- Password-->
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" id="password" th:field="*{password}" placeholder="" class="form-control">
+                <p class="help-block"></p>
+                <label th:if="${#fields.hasErrors('password')}" th:class="'error'" th:errors="*{password}" class="col-lg-4 control-label" style="color:red;" ></label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <!-- userRole-->
+            <label class="control-label" for="userRole">User Role</label>
+            <div class="controls">
+                <select  id = "userRole" class="form-control" th:field = "*{userRole}">
+                    <option th:each="role : ${T(com.sda.onlineAuction.model.UserRole).values()}"
+                            th:value="${role.name()}" th:text="${role.getFriendlyName()}"></option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <!-- Button -->
+            <div class="controls">
+                <button class="btn btn-success">Register</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+</body>
+</html>
